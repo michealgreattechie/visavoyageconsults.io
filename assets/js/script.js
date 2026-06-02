@@ -99,3 +99,28 @@ document.querySelectorAll(".vv-tab").forEach((tab) => {
     observer.observe(card);
   });
 })();
+
+
+(function () {
+  var cards = document.querySelectorAll(".vvc-card");
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var delay = parseInt(el.getAttribute("data-vvc-delay") || "0", 10);
+          setTimeout(function () {
+            el.classList.add("vvc-visible");
+          }, delay);
+          observer.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: "0px 0px -30px 0px" },
+  );
+
+  cards.forEach(function (card, i) {
+    card.setAttribute("data-vvc-delay", String((i % 3) * 100));
+    observer.observe(card);
+  });
+})();
